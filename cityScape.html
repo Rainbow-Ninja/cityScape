@@ -1,0 +1,182 @@
+<!-- CHALLENGE 3: City Skyline HTML/CSS Art Project
+Check out these city skylines here: https://image.freepik.com/free-vector/black-city-skylines_23-2147504628.jpg
+The challenge is to create something similar to (but better than) one of those skylines.
+3.1 - Core Functionality 
+    Make a webpage that contains at least 3 skyscrapers in the skyline - and the skyscrapers must have windows! 
+    
+    Keep the shapes simple - boxes are fine. 
+    The webpage should have different lighting depending on the time of day.
+    You should be able to control the time of day by pressing some buttons on the page. 
+    It should be able to cycle through these states:
+        - morning
+        - day
+        - evening
+        - night
+        - midnight
+    In the morning, the city is slowly lighting up. The sky is a gold colour. 
+    The building lights are off, and you can see the colours of the buildings (eg. gray) clear in the light.
+    Street lights are off.
+    During the day, the sky is a light blue. Otherwise it's the same as the morning.
+    In the evening, the sky is going orange. Some street lights are turning on and some building lights are going on. 
+    Otherwise it's the same as morning/day. 
+    At night, the city is dark. The sky is a blue-black colour, the buildings are black and have lights on in some of their windows.
+    There might even be some street lights on near the bottom of the buildings.
+    There's a big full moon in the background of the city, too.
+    After midnight, the city is completely asleep. Lights are off, everything is dark. 
+    There's a big full moon in the background of the city - it's the only light right now.
+3.2 - OPTIONAL! Randomized Buildings 
+    This might require an overhaul on how you've built your buildings.
+    Every time the page is refreshed, the buildings will be different.
+    These things should be different:
+        - building size
+        - number of rows for the windows in buildings
+        - number of columns for the windows in buildings
+        - the amount of windows in each building (you may need blank/invisible window spaces to keep things working nicely)
+        - the colour of the buildings
+         -->
+
+         <!DOCTYPE html>
+         <html lang="en">
+         <head>
+             <meta charset="UTF-8">
+             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+             <meta http-equiv="X-UA-Compatible" content="ie=edge">
+             <title>CityScape</title>
+             <link rel="stylesheet" type="text/css" href="cityStyle.css">
+         </head>
+         <body>
+             <button id="morning" type="button">Morning</button>
+             <button id="noon" type="button">Noon</button>
+             <button id="evening" type="button">Evening</button>
+             <button id="night" type="button">Night</button>
+             <div class="sky" id="skyArea">
+                 <div id="sun"></div>
+                 <div class="buildingDiv"></div>
+                 <div class="ground"></div>
+             </div>
+         
+             <script>
+                 //making random number of buildings
+                 var buildingSpot = document.querySelector(".buildingDiv");
+                 for(let i = 0; i < Math.ceil(Math.random()*20); i++){
+                     var myBuildings = document.createElement("div");
+                     myBuildings.setAttribute("class", "building");
+                     myBuildings.setAttribute("id", `B${i}`);
+                     myBuildings.setAttribute("style", `height: ${Math.round(Math.random()*40+10)}%; margin: 5px`);
+                     buildingSpot.appendChild(myBuildings);
+                     //make random number of windows per building
+                     var theBuilding = document.querySelector(`#B${i}`);
+                     for(let j = 0; j < Math.ceil(Math.random()*15); j++){
+                         var myWindows = document.createElement("div");
+                         myWindows.setAttribute("class", "window");
+                         theBuilding.appendChild(myWindows);
+                     }
+                 }
+                 //click morning button
+                 var clickMorn = document.getElementById("morning");
+                 clickMorn.addEventListener("click", function(event){
+                     var skyColour = document.getElementById("skyArea");
+                     skyColour.style.backgroundImage = "linear-gradient(0deg, #CC5500 0%, #FED691 25%, #596E79 75%, #000066 90%)";
+                     var windowCol = document.getElementsByClassName("window");
+                     for(let i = 0; i < windowCol.length; i++){
+                         if(i%3 == 0){
+                             windowCol[i].style.backgroundColor = "#FFDF66";
+                         } else {
+                             windowCol[i].style.backgroundColor = "#222";
+                         }
+                         }
+                     
+                     var sunCol = document.getElementById("sun");
+                     sunCol.style.backgroundColor = "yellow";
+                     sunCol.style.boxShadow = "15px 15px 10px rgb(255, 230, 0) inset";
+                     
+                     function sunMove() {
+                         var elem = document.getElementById("sun");   
+                         var pos = 50;
+                         var id = setInterval(frame, 5);
+                         function frame() {
+                             if (pos == 75) {
+                                 clearInterval(id);
+                             } else {
+                                 pos++; 
+                                 elem.style.bottom = pos + "px"; 
+                                 elem.style.left = pos + "px"; 
+                             }
+                         }
+                     }
+                     sunMove();
+                 });
+                 var clickNoon = document.getElementById("noon");
+                 clickNoon.addEventListener("click", function(event){
+                     var skyColour = document.getElementById("skyArea");
+                     skyColour.style.backgroundImage = "linear-gradient(0deg, #B0DFE5 40%, #8085FF 70%, #0080FF 90%)";
+                     var windowCol = document.getElementsByClassName("window");
+                     for(x of windowCol){
+                         x.style.backgroundColor = "#222";
+                     }
+                     var sunCol = document.getElementById("sun");
+                     sunCol.style.backgroundColor = "yellow";
+                     sunCol.style.boxShadow = "15px 15px 10px rgb(255, 230, 0) inset";
+                     function sunMove() {
+                         var elem = document.getElementById("sun");   
+                         var pos = 75;
+                         var id = setInterval(frame, 5);
+                         function frame() {
+                             if (pos == 350) {
+                                 clearInterval(id);
+                             } else {
+                                 pos++; 
+                                 elem.style.bottom = pos + "px"; 
+                                 elem.style.left = pos + "px"; 
+                             }
+                         }
+                     }
+                     sunMove();
+                 });
+                 var clickEvening = document.getElementById("evening");
+                 clickEvening.addEventListener("click", function(event){
+                     var skyColour = document.getElementById("skyArea");
+                     skyColour.style.backgroundImage = "linear-gradient(0deg, #FFE577 0%, #FEC051 15%, #FF8866 30%, #FD6051 45%, #9A7E8E 65%, #526079 90%)";
+                     var windowCol = document.getElementsByClassName("window");
+                     for(let i = 0; i < windowCol.length; i++){
+                         if(i%2 == 0){
+                             windowCol[i].style.backgroundColor = "#FFDF66";
+                         } else {
+                             windowCol[i].style.backgroundColor = "#222";
+                         }
+                     }
+                     var sunCol = document.getElementById("sun");
+                     sunCol.style.backgroundColor = "#FFF222";
+                     sunCol.style.boxShadow = "15px 15px 10px rgb(255, 230, 0) inset";
+                     function sunMove() {
+                         var elem = document.getElementById("sun");   
+                         var pos = 350;
+                         var id = setInterval(frame, 5);
+                         function frame() {
+                             if (pos == 850) {
+                                 clearInterval(id);
+                             } else {
+                                 pos++; 
+                                 elem.style.bottom = "350px";
+                                 elem.style.left = pos + "px"; 
+                             }
+                         }
+                     }
+                     sunMove();
+                 });
+                 var clickNight = document.getElementById("night");
+                 clickNight.addEventListener("click", function(event){
+                     var skyColour = document.getElementById("skyArea");
+                     skyColour.style.backgroundImage = "linear-gradient(0deg, #0A0B3A 25%, #040020 50%, #0D0015 75%, #000000 90%)";
+                     var windowCol = document.getElementsByClassName("window");
+                     for(x of windowCol){
+                         x.style.backgroundColor = "#FFDF66";
+                     }
+                     var sunCol = document.getElementById("sun");
+                     sunCol.style.backgroundColor = "#F3F47E";
+                     sunCol.style.boxShadow = "15px 15px 10px #EDEE3E inset";
+                     sunCol.style.boxShadow = "0 0 45px #EDEE3E";
+                 });
+             </script>
+         </body>
+         </html>
